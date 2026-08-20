@@ -28,6 +28,8 @@ namespace CityGuide.Maui.Services
             await _database.CreateTableAsync<Category>();
             await _database.CreateTableAsync<Event>();
             await _database.CreateTableAsync<User>();
+            await _database.CreateTableAsync<Place>();
+            await _database.CreateTableAsync<Favorite>();
         }
 
         // --- Okuma metotları ---
@@ -104,6 +106,70 @@ namespace CityGuide.Maui.Services
                                   .Where(u => u.Email == email)
                                   .FirstOrDefaultAsync();
         }
+        // --- Mekan (Place) metotları ---
+        public async Task<List<Place>> GetPlacesAsync()
+        {
+            await InitAsync();
+            return await _database.Table<Place>().ToListAsync();
+        }
+
+        // --- Favori metotları ---
+
+        // Bir mekanı favorilere ekler (insert)
+        public async Task<int> AddFavoriteAsync(int userId, int placeId)
+        {
+            await InitAsync();
+            var favorite = new Favorite { UserId = userId, PlaceId = placeId };
+            return await _database.InsertAsync(favorite);
+        }
+
+        // Bir mekanı favorilerden çıkarır (delete)
+        public async Task<int> RemoveFavoriteAsync(int userId, int placeId)
+        {
+            await InitAsync();
+            var existing = await _database.Table<Favorite>()
+                .Where(f => f.UserId == userId && f.PlaceId == placeId)
+                .FirstOrDefaultAsync();
+
+            if (existing is null)
+                return 0;
+
+            return await _database.DeleteAsync(existing);
+        }
+
+        // Bir mekan favori mi? (true/false)
+        public async Task<bool> IsFavoriteAsync(int userId, int placeId)
+        {
+            await InitAsync();
+            var existing = await _database.Table<Favorite>()
+                .Where(f => f.UserId == userId && f.PlaceId == placeId)
+                .FirstOrDefaultAsync();
+
+            return existing is not null;
+        }
+
+        // Bir kullanıcının favorilediği mekanları getirir (join mantığı)
+        public async Task<List<Place>> GetFavoritePlacesAsync(int userId)
+        {
+            await InitAsync();
+
+            // 1) Bu kullanıcının favori kayıtlarını çek
+            var favorites = await _database.Table<Favorite>()
+                .Where(f => f.UserId == userId)
+                .ToListAsync();
+
+            // 2) Favorilenen PlaceId'leri topla
+            var favoritePlaceIds = favorites.Select(f => f.PlaceId).ToList();
+
+            // 3) Bu Id'lere sahip mekanları çek
+            var allPlaces = await _database.Table<Place>().ToListAsync();
+            var favoritePlaces = allPlaces
+                .Where(p => favoritePlaceIds.Contains(p.Id))
+                .ToList();
+
+            return favoritePlaces;
+        }
+
 
 
     }

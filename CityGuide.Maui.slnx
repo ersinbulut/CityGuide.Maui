@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="CityGuide.Maui/CityGuide.Maui.csproj" />
+  <Project Path="MauiWebApi/MauiWebApi.csproj" Id="c1eda884-162d-4659-8dd9-661cac0170c1" />
 </Solution>

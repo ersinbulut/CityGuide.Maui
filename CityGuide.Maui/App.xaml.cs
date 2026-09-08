@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CityGuide.Maui.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CityGuide.Maui
 {
@@ -11,9 +12,9 @@ namespace CityGuide.Maui
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            var window=new Window(new Views.FavoritesPage());
+            var window = new Window(new AppShell());
             window.Width = 393;
-            window.Height = 752;
+            window.Height = 652;
             return window;
         }
     }

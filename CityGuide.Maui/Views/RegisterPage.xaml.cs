@@ -14,22 +14,13 @@ public partial class RegisterPage : ContentPage
 
     private void OnTogglePasswordVisibility(object sender, TappedEventArgs e)
     {
-        // IsPassword'ü tersine çevir
         PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
 
-        // İkonu duruma göre güncelle
         if (PasswordEntry.IsPassword)
-        {
-            // Şifre gizli -> "göster" ikonu
-            PasswordToggleIcon.Text = "🙈";
-        }
+            PasswordToggleIcon.Text = "\ue8f4";   // visibility (göz açık)
         else
-        {
-            // Şifre açık -> "gizle" ikonu
-            PasswordToggleIcon.Text = "🐵";
-        }
+            PasswordToggleIcon.Text = "\ue8f5";   // visibility_off (göz çizgili)
     }
-
 
     private async void OnTermsTapped(object sender, TappedEventArgs e)
     {
@@ -48,10 +39,9 @@ public partial class RegisterPage : ContentPage
     }
 
 
-
     private async void OnSignInTapped(object sender, TappedEventArgs e)
     {
-        await DisplayAlert("Giriş Yap", "Giriş ekranı yakında eklenecek.", "Tamam");
+        await Shell.Current.GoToAsync("//login");
     }
 
     private async void OnSupportTapped(object sender, TappedEventArgs e)

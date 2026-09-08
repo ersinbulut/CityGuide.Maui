@@ -4,40 +4,54 @@ using CityGuide.Maui.Services;
 
 namespace CityGuide.Maui.Views;
 
+public class PlaceFilterItem
+{
+    public string Name { get; set; } = string.Empty;
+    public bool IsSelected { get; set; }
+
+    public Color BackgroundColor => IsSelected ? Color.FromArgb("#0D47A1") : Color.FromArgb("#FFFFFF");
+    public Color BorderColor => IsSelected ? Color.FromArgb("#0D47A1") : Color.FromArgb("#C3C6D4");
+    public Color TextColor => IsSelected ? Color.FromArgb("#FFFFFF") : Color.FromArgb("#191C1D");
+
+    public override string ToString() => Name;
+}
+
 public partial class FavoritesPage : ContentPage
 {
     private readonly AppDatabase _db = new AppDatabase();
-    private const int CurrentUserId = 1;
+    private int CurrentUserId => CurrentSession.UserId;
 
-    // Tüm mekanları bellekte tut (filtreleme için)
     private List<Place> _allPlaces = new List<Place>();
+    private List<PlaceFilterItem> _filterItems = new List<PlaceFilterItem>();
     private string _selectedCategory = "Tümü";
 
     public FavoritesPage()
     {
         InitializeComponent();
 
-        // Filtre haplarını doldur
-        FilterCollection.ItemsSource = new List<string>
+        _filterItems = new List<PlaceFilterItem>
         {
-            "Tümü", "Restoran", "Müze", "Rota", "Kafe"
+            new PlaceFilterItem { Name = "Tümü", IsSelected = true },
+            new PlaceFilterItem { Name = "Restoran" },
+            new PlaceFilterItem { Name = "Müze" },
+            new PlaceFilterItem { Name = "Rota" },
+            new PlaceFilterItem { Name = "Kafe" }
         };
+
+        FilterCollection.ItemsSource = _filterItems;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
         await LoadPlacesAsync();
-
-        // Başlangıçta "Tümü" seçili
-        FilterCollection.SelectedItem = "Tümü";
+        FilterCollection.SelectedItem = _filterItems.First(i => i.Name == "Tümü");
     }
 
     private async Task LoadPlacesAsync()
     {
         var places = await _db.GetPlacesAsync();
 
-        // Her mekan için favori mi diye işaretle
         foreach (var place in places)
         {
             place.IsFavorite = await _db.IsFavoriteAsync(CurrentUserId, place.Id);
@@ -47,7 +61,6 @@ public partial class FavoritesPage : ContentPage
         ApplyFilter();
     }
 
-    // Seçili kategoriye göre listeyi süz
     private void ApplyFilter()
     {
         if (_selectedCategory == "Tümü")
@@ -64,14 +77,22 @@ public partial class FavoritesPage : ContentPage
 
     private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not string category)
+        if (e.CurrentSelection.FirstOrDefault() is not PlaceFilterItem selected)
             return;
 
-        _selectedCategory = category;
+        foreach (var item in _filterItems)
+        {
+            item.IsSelected = (item == selected);
+        }
+
+        FilterCollection.ItemsSource = null;
+        FilterCollection.ItemsSource = _filterItems;
+        FilterCollection.SelectedItem = selected;
+
+        _selectedCategory = selected.Name;
         ApplyFilter();
     }
 
-    // Kalbe tıklanınca
     private async void OnFavoriteTapped(object sender, TappedEventArgs e)
     {
         if (sender is not Label label) return;
@@ -83,5 +104,28 @@ public partial class FavoritesPage : ContentPage
             await _db.AddFavoriteAsync(CurrentUserId, place.Id);
 
         await LoadPlacesAsync();
+    }
+
+    private async void OnDetailsClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button) return;
+        if (button.BindingContext is not Place place) return;
+
+        await Shell.Current.GoToAsync($"placedetail?id={place.Id}");
+    }
+
+    private async void OnHomeTapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("//home");
+    }
+
+    private async void OnEventsTapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("//events");
+    }
+
+    private async void OnProfileTapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("profile");
     }
 }

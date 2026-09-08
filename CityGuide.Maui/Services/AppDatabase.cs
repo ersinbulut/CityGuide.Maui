@@ -1,8 +1,9 @@
-﻿using SQLite;
+﻿using CityGuide.Maui.Models;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CityGuide.Maui.Models;
+using static CityGuide.Maui.Models.RouteStop;
 
 namespace CityGuide.Maui.Services
 {
@@ -30,6 +31,11 @@ namespace CityGuide.Maui.Services
             await _database.CreateTableAsync<User>();
             await _database.CreateTableAsync<Place>();
             await _database.CreateTableAsync<Favorite>();
+            await _database.CreateTableAsync<TransportLine>();
+            await _database.CreateTableAsync<Route>();
+            await _database.CreateTableAsync<RouteStop>();
+            await _database.CreateTableAsync<FoodPlace>();
+            await _database.CreateTableAsync<PlaceImage>();
         }
 
         // --- Okuma metotları ---
@@ -170,6 +176,59 @@ namespace CityGuide.Maui.Services
             return favoritePlaces;
         }
 
+
+        // --- Ulaşım hatları ---
+        public async Task<List<TransportLine>> GetTransportLinesAsync()
+        {
+            await InitAsync();
+            return await _database.Table<TransportLine>().ToListAsync();
+        }
+
+        // İstersen türe göre filtrelenmiş halini de almak için:
+        public async Task<List<TransportLine>> GetTransportLinesByTypeAsync(string type)
+        {
+            await InitAsync();
+            return await _database.Table<TransportLine>()
+                                  .Where(t => t.Type == type)
+                                  .ToListAsync();
+        }
+
+
+        // --- Rotalar ---
+
+        // Tüm rotaları getirir (durakları olmadan)
+        public async Task<List<Route>> GetRoutesAsync()
+        {
+            await InitAsync();
+            return await _database.Table<Route>().ToListAsync();
+        }
+
+        // Belirli bir rotanın duraklarını, sıralı şekilde getirir
+        public async Task<List<RouteStop>> GetRouteStopsAsync(int routeId)
+        {
+            await InitAsync();
+            return await _database.Table<RouteStop>()
+                                  .Where(s => s.RouteId == routeId)
+                                  .OrderBy(s => s.OrderIndex)
+                                  .ToListAsync();
+        }
+
+        //okuma metodu
+        public async Task<List<FoodPlace>> GetFoodPlacesAsync()
+        {
+            await InitAsync();
+            return await _database.Table<FoodPlace>().ToListAsync();
+        }
+
+        //belirli bir mekanın galeri görsellerini sıralı şekilde getirir
+        public async Task<List<PlaceImage>> GetPlaceImagesAsync(int placeId)
+        {
+            await InitAsync();
+            return await _database.Table<PlaceImage>()
+                .Where(img => img.PlaceId == placeId)
+                .OrderBy(img => img.OrderIndex)
+                .ToListAsync();
+        }
 
 
     }

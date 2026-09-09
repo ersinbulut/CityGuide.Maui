@@ -1,18 +1,12 @@
 ﻿using CityGuide.Maui.Models;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using static CityGuide.Maui.Models.Route;
 using static CityGuide.Maui.Models.RouteStop;
-
 namespace CityGuide.Maui.Services
 {
     public class AppDatabase
     {
         private SQLiteAsyncConnection _database;
-
-        // Veritabanını hazırlar: bağlantıyı açar ve tabloları oluşturur.
-        // Bir kez kurulduktan sonra tekrar kurmaz.
         private async Task InitAsync()
         {
             if (_database is not null)
@@ -36,6 +30,7 @@ namespace CityGuide.Maui.Services
             await _database.CreateTableAsync<RouteStop>();
             await _database.CreateTableAsync<FoodPlace>();
             await _database.CreateTableAsync<PlaceImage>();
+
         }
 
         // --- Okuma metotları ---
@@ -51,7 +46,6 @@ namespace CityGuide.Maui.Services
             await InitAsync();
             return await _database.Table<Event>().ToListAsync();
         }
-
 
         // Etkinlikleri çeker VE her birinin kategori adını doldurur (foreign key eşleştirme)
         public async Task<List<Event>> GetEventsWithCategoryAsync()
@@ -79,7 +73,6 @@ namespace CityGuide.Maui.Services
             return events;
         }
 
-
         // --- Yazma metotları (uygulama içinden eklemek istersen) ---
 
         public async Task<int> AddCategoryAsync(Category category)
@@ -93,7 +86,6 @@ namespace CityGuide.Maui.Services
             await InitAsync();
             return await _database.InsertAsync(newEvent);
         }
-
 
         // --- Kullanıcı metotları ---
 
@@ -112,7 +104,9 @@ namespace CityGuide.Maui.Services
                                   .Where(u => u.Email == email)
                                   .FirstOrDefaultAsync();
         }
+
         // --- Mekan (Place) metotları ---
+
         public async Task<List<Place>> GetPlacesAsync()
         {
             await InitAsync();
@@ -176,7 +170,6 @@ namespace CityGuide.Maui.Services
             return favoritePlaces;
         }
 
-
         // --- Ulaşım hatları ---
         public async Task<List<TransportLine>> GetTransportLinesAsync()
         {
@@ -192,7 +185,6 @@ namespace CityGuide.Maui.Services
                                   .Where(t => t.Type == type)
                                   .ToListAsync();
         }
-
 
         // --- Rotalar ---
 
@@ -213,23 +205,21 @@ namespace CityGuide.Maui.Services
                                   .ToListAsync();
         }
 
-        //okuma metodu
+        // Okuma metodu:
         public async Task<List<FoodPlace>> GetFoodPlacesAsync()
         {
             await InitAsync();
             return await _database.Table<FoodPlace>().ToListAsync();
         }
 
-        //belirli bir mekanın galeri görsellerini sıralı şekilde getirir
+        // Belirli bir mekanın galeri görsellerini, sıralı şekilde getirir
         public async Task<List<PlaceImage>> GetPlaceImagesAsync(int placeId)
         {
             await InitAsync();
             return await _database.Table<PlaceImage>()
-                .Where(img => img.PlaceId == placeId)
-                .OrderBy(img => img.OrderIndex)
-                .ToListAsync();
+                                  .Where(img => img.PlaceId == placeId)
+                                  .OrderBy(img => img.OrderIndex)
+                                  .ToListAsync();
         }
-
-
     }
 }

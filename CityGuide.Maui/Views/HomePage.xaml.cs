@@ -4,28 +4,31 @@ namespace CityGuide.Maui.Views;
 
 public partial class HomePage : ContentPage
 {
-    private readonly AppDatabase _db = new AppDatabase();
-    public HomePage()
+	public HomePage()
 	{
 		InitializeComponent();
-	}
-    private async void OnExploreClicked(object sender, EventArgs e)
-    {
-        await DisplayAlert("KeÅŸfet", "Detay sayfasÄ± yakÄ±nda eklenecek.", "Tamam");
+        Routing.RegisterRoute("specialevents", typeof(Views.SpecialEventsPage));
     }
 
-    private async void OnFavoritesClicked(object sender, TappedEventArgs e)
-    {
-        await Shell.Current.GoToAsync("favorites");
-    }
+    private readonly AppDatabase _db = new AppDatabase();
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        // PopÃ¼ler yerleri yÃ¼kle (ilk birkaÃ§ mekan)
+        // Popüler yerleri yükle (ilk birkaç mekan)
         var places = await _db.GetPlacesAsync();
         PopularPlacesCollection.ItemsSource = places.Take(10).ToList();
+    }
+
+    private async void OnExploreClicked(object sender, EventArgs e)
+    {
+        await DisplayAlert("Keþfet", "Detay sayfasý yakýnda eklenecek.", "Tamam");
+    }
+
+    private async void OnFavoritesClicked(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("//discover");
     }
 
     private async void OnDiscoverTapped(object sender, TappedEventArgs e)
@@ -47,10 +50,14 @@ public partial class HomePage : ContentPage
     {
         await Shell.Current.GoToAsync("fooddrinks");
     }
+
     private async void OnCultereClicked(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("cultures");
     }
-    
 
+    private async void OnDashboardClicked(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("dashboard");
+    }
 }

@@ -44,8 +44,7 @@
                     StrokeShape="RoundRectangle 18"
                     VerticalOptions="Center">
                 <Image Source="profile.png"
-                       Aspect="AspectFill"
-                       />
+                       Aspect="AspectFill" />
             </Border>
 
         </Grid>
@@ -90,6 +89,47 @@
                     </Border>
 
                 </VerticalStackLayout>
+
+                <!-- === PANEL KISAYOLU === -->
+                <Border BackgroundColor="#EDE7F6"
+        Stroke="#D1C4E9"
+        StrokeThickness="1"
+        Padding="16"
+        StrokeShape="RoundRectangle 14">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDashboardClicked" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                        <Border Grid.Column="0"
+                BackgroundColor="#D1C4E9"
+                WidthRequest="40" HeightRequest="40"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 20">
+                            <Label Text="&#xe94e;"
+                   FontFamily="MaterialSymbols"
+                   FontSize="20"
+                   TextColor="#4A148C"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="0" VerticalOptions="Center">
+                            <Label Text="Panel"
+                   FontFamily="HankenBold"
+                   FontSize="15"
+                   TextColor="#4A148C" />
+                            <Label Text="Döviz, hava durumu ve daha fazlası"
+                   FontFamily="Inter"
+                   FontSize="12"
+                   TextColor="#4A148C" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2"
+               Text="&#xe5cc;"
+               FontFamily="MaterialSymbols"
+               FontSize="20"
+               TextColor="#4A148C"
+               VerticalOptions="Center" />
+                    </Grid>
+                </Border>
 
                 <!-- === ÖNE ÇIKAN (HERO) === -->
                 <Border StrokeThickness="0"
@@ -168,7 +208,7 @@
                         <!-- Yeme-İçme -->
                         <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="6">
                             <VerticalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnFoodDrinksClicked"/>
+                                <TapGestureRecognizer Tapped="OnFoodDrinksClicked" />
                             </VerticalStackLayout.GestureRecognizers>
                             <Border BackgroundColor="#FFF3C4"
                                     WidthRequest="56" HeightRequest="56"
@@ -215,7 +255,7 @@
                         <!-- Kültür & Sanat -->
                         <VerticalStackLayout Grid.Row="0" Grid.Column="2" Spacing="6">
                             <VerticalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnCultereClicked"/>
+                                <TapGestureRecognizer Tapped="OnCultereClicked" />
                             </VerticalStackLayout.GestureRecognizers>
                             <Border BackgroundColor="#FFDBCD"
                                     WidthRequest="56" HeightRequest="56"
@@ -281,7 +321,7 @@
                                    HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
 
-                        <!-- Favoriler -->
+                        <!-- Etkinlikler -->
                         <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="6">
                             <VerticalStackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnFavoritesClicked" />
@@ -397,7 +437,6 @@
                     </CollectionView>
 
                 </VerticalStackLayout>
-
 
                 <!-- === SENİN İÇİN ÖNERİLER === -->
                 <VerticalStackLayout Spacing="12">
@@ -536,72 +575,77 @@
 
                 </VerticalStackLayout>
 
+         
+
             </VerticalStackLayout>
         </ScrollView>
-            <!-- === ALT NAV BAR === -->
-                <Grid Grid.Row="2"
-            ColumnDefinitions="*, *, *, *"
-            BackgroundColor="#FFFFFF"
-            Padding="0,8"
-            HeightRequest="64">
 
-                    <!-- Ana Sayfa (aktif) -->
-                    <VerticalStackLayout Grid.Column="0" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
-                        <Label Text="&#xe88a;"
-                     FontFamily="MaterialSymbols"
-                     FontSize="24"
-                     TextColor="#0D47A1"
-                     HorizontalOptions="Center" />
-                        <Label Text="Ana Sayfa"
-                     FontFamily="Inter"
-                     FontSize="11"
-                     TextColor="#0D47A1"
-                     HorizontalOptions="Center" />
-                    </VerticalStackLayout>
+        <!-- === ALT NAV BAR === -->
+        <Grid Grid.Row="2"
+ColumnDefinitions="*, *, *,*"
+BackgroundColor="#FFFFFF"
+Padding="0,8"
+HeightRequest="64">
 
-                    <!-- Keşfet -->
-                    <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnDiscoverTapped" />
-                        </VerticalStackLayout.GestureRecognizers>
-                        <Label Text="&#xe87a;"
-                     FontFamily="MaterialSymbols"
-                     FontSize="24"
-                     TextColor="#737783"
-                     HorizontalOptions="Center" />
-                        <Label Text="Keşfet"
-                     FontFamily="Inter"
-                     FontSize="11"
-                     TextColor="#737783"
-                     HorizontalOptions="Center" />
-                    </VerticalStackLayout>
+            <!-- Ana Sayfa (aktif) -->
+            <VerticalStackLayout Grid.Column="0" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="&#xe88a;"
+         FontFamily="MaterialSymbols"
+         FontSize="24"
+         TextColor="#0D47A1"
+         HorizontalOptions="Center" />
+                <Label Text="Ana Sayfa"
+         FontFamily="Inter"
+         FontSize="11"
+         TextColor="#0D47A1"
+         HorizontalOptions="Center" />
+            </VerticalStackLayout>
 
-                    <!-- Etkinlikler -->
-                    <VerticalStackLayout Grid.Column="2" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnEventsTapped" />
-                        </VerticalStackLayout.GestureRecognizers>
-                        <Label Text="&#xe878;"
-                     FontFamily="MaterialSymbols"
-                     FontSize="24"
-                     TextColor="#737783"
-                     HorizontalOptions="Center" />
-                        <Label Text="Etkinlikler"
-                     FontFamily="Inter"
-                     FontSize="11"
-                     TextColor="#737783"
-                     HorizontalOptions="Center" />
-                    </VerticalStackLayout>
+            <!-- Keşfet -->
+            <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnDiscoverTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="&#xe87a;"
+         FontFamily="MaterialSymbols"
+         FontSize="24"
+         TextColor="#737783"
+         HorizontalOptions="Center" />
+                <Label Text="Keşfet"
+         FontFamily="Inter"
+         FontSize="11"
+         TextColor="#737783"
+         HorizontalOptions="Center" />
+            </VerticalStackLayout>
 
-                    <!-- Profil (yeni) -->
-                    <VerticalStackLayout Grid.Column="3" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnProfileTapped" />
-                        </VerticalStackLayout.GestureRecognizers>
-                        <Label Text="&#xe7fd;" FontFamily="MaterialSymbols" FontSize="24" TextColor="#737783" HorizontalOptions="Center" />
-                        <Label Text="Profil" FontFamily="Inter" FontSize="11" TextColor="#737783" HorizontalOptions="Center" />
-                    </VerticalStackLayout>  
+            <!-- Etkinlikler -->
+            <VerticalStackLayout Grid.Column="2" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEventsTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="&#xe878;"
+         FontFamily="MaterialSymbols"
+         FontSize="24"
+         TextColor="#737783"
+         HorizontalOptions="Center" />
+                <Label Text="Etkinlikler"
+         FontFamily="Inter"
+         FontSize="11"
+         TextColor="#737783"
+         HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- Profil (yeni) -->
+            <VerticalStackLayout Grid.Column="3" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnProfileTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="&#xe7fd;" FontFamily="MaterialSymbols" FontSize="24" TextColor="#737783" HorizontalOptions="Center" />
+                <Label Text="Profil" FontFamily="Inter" FontSize="11" TextColor="#737783" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
         </Grid>
+
     </Grid>
 
 </ContentPage>

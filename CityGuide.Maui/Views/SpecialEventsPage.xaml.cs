@@ -15,7 +15,7 @@ public partial class SpecialEventsPage : ContentPage
         base.OnAppearing();
 		try
 		{
-			var events = await _api.GetEventAsync();
+			var events = await _api.GetEventsAsync();
 			EventsCollection.ItemsSource = events;
         }
 		catch (Exception ex)

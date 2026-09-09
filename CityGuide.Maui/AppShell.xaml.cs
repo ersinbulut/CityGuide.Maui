@@ -1,5 +1,3 @@
-﻿using CityGuide.Maui.Views;
-
 namespace CityGuide.Maui
 {
     public partial class AppShell : Shell
@@ -13,8 +11,11 @@ namespace CityGuide.Maui
             Routing.RegisterRoute("profile", typeof(Views.ProfilePage));
             Routing.RegisterRoute("fooddrinks", typeof(Views.FoodDrinksPage));
             Routing.RegisterRoute("cultures", typeof(Views.CulturePage));
-            Routing.RegisterRoute("culturedetail", typeof(CultureDetailPage));
-            Routing.RegisterRoute("favorites", typeof(FavoritesPage));
+            Routing.RegisterRoute("culturedetail", typeof(Views.CultureDetailPage));
+            Routing.RegisterRoute("favorites", typeof(Views.FavoritesPage));
+            Routing.RegisterRoute("placedetail", typeof(Views.PlaceDetailPage));
+            Routing.RegisterRoute("dashboard", typeof(Views.DashboardPage));
+            Routing.RegisterRoute("transportation", typeof(Views.TransportationPage));
         }
 
     }
